@@ -37,3 +37,6 @@ override.tf.json
 #var files
 *.tfvars
 variables.tf
+
+# provide file
+provider.tf
