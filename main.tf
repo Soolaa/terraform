@@ -17,38 +17,60 @@ resource "aws_vpc" "sahar-vpc1" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name= "sahar-vpc1"
+    Name = "sahar-vpc1"
   }
-  }
+}
 
 resource "aws_subnet" "sahar-vpc1-subnet" {
-  vpc_id = aws_vpc.sahar-vpc1.id
-  cidr_block = "10.0.10.0/24"
-
+  vpc_id     = aws_vpc.sahar-vpc1.id
+  cidr_block = var.cider_blocks[1].cider_block
   tags = {
-    Name: "sahar-vpn1-subnet"
+    Name : var.cider_blocks[1].name
   }
 }
 
 data "aws_vpc" "sahar-data-vpc" {
-  default = true  
+  default = true
 }
 
 resource "aws_subnet" "data-sahar-subnet" {
-  vpc_id = data.aws_vpc.sahar-data-vpc.id
-  cidr_block = "172.31.128.0/20"
+  vpc_id            = data.aws_vpc.sahar-data-vpc.id
+  cidr_block        = "172.31.128.0/20"
   availability_zone = "us-east-1a"
-  
+
+  tags = {
+    Name = "sahar-def-subnet"
+  }
+
 }
 
 resource "aws_instance" "sahar-ec2" {
-  ami = "ami-080e1f13689e07408"
-  instance_type = "t2.micro"
-  key_name = "sahar-key-pair"
+  ami                         = var.ami_id
+  instance_type               = var.instance_type
+  key_name                    = var.key_name
   associate_public_ip_address = true
 
   tags = {
     Name = "sahar-ec2"
   }
+}
+
+output "vpc-id" {
+    value = aws_vpc.sahar-vpc1.id
+}
+
+output "ec2-public-ip" {
+  value =  aws_instance.sahar-ec2.public_ip
+}
+
+output "ec2-dns-name" {
+  value = aws_instance.sahar-ec2.public_dns
   
 }
+# resource "aws_s3_bucket" "sahar-s3" {
+#   bucket = "sahar-state-file"
+
+#   tags = {
+#     Name = "sahar-state-bucket"
+#   }
+# }

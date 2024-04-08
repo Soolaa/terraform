@@ -33,3 +33,7 @@ override.tf.json
 /.vscode/
 *.lock.hcl
 .infracost
+
+#var files
+*.tfvars
+variables.tf
