@@ -2,6 +2,7 @@
 # Configure the AWS Provider
 provider "aws" {
   region     = "us-east-1"
+
 }
 
 # terraform {
@@ -17,6 +18,7 @@ terraform {
     bucket     = "sahar-state-file"
     key        = "state-file"
     region     = "us-east-1"
+
   }
   required_providers {
     aws = {
